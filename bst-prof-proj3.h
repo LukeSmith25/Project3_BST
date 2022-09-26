@@ -129,9 +129,6 @@ class BST {
         BSTNode<Base> *root;
 };
 
-
-
-
 /* An EncryptionTree is a special type of BST which knows how to encrypt an
  * object (e.g. word) into a string that represents the path to the object in
  * the tree, and decrypt a path into the object (e.g. word) it leads to.
