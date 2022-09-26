@@ -13,20 +13,20 @@
 using namespace std;
 
 int main() {
-    BST<int> tree;
+    BST<string> tree;
 
-    tree.insert(4);
-    tree.insert(2);
-    tree.insert(3);
-    tree.insert(1);
-    tree.insert(5);
-    tree.insert(6);
+    tree.insert("four");
+    tree.insert("score");
+    tree.insert("and");
+    tree.insert("seven");
+    tree.insert("years");
+    tree.insert("ago");
 
     tree.printPreorder();
     cout << endl << endl << endl;
 
-    tree.remove(3);
 
-    tree.printPreorder();
+
+    //tree.printPreorder();
     return 0;
 }

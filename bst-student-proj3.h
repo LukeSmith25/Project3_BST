@@ -39,6 +39,7 @@ void BSTNode<Base>::printPreorder(ostream &os, string indent) const {
         getLeft()->printPreorder(os, indent);
         getRight()->printPreorder(os, indent);
     } else {
+        indent.erase(0, 1);
         os << indent << "NULL" << endl;
     }
 }
@@ -67,41 +68,41 @@ void BST<Base>::insert(const Base &item) {
     // Declare new node to be inserted
     BSTNode<Base> *node = new BSTNode<Base>(item);
 
-    // If the root is null then assign root to item
-    if (!root) {
-        root = node;
-        return;
-    }
     // Create a previous and temporary node for iteration
     BSTNode<Base> *par = NULL;
     BSTNode<Base> *cur = root;
 
     // While temp is not null iterate through tree
     while (cur) {
+        par = cur;
         // If item < temp, temp = left node
         if (item < cur->data) {
-            par = cur;
             cur = cur->left;
         }
         // If item > temp, temp = right node
-        else if (cur->data < item) {
-            par = cur;
+        else {
             cur = cur->right;
         }
     }
 
-    // Insert new node at location left or right
-    if (!par->left) {
+    // If the root is null then assign root to item
+    if (!root) {
+        root = node;
+    }
+    // Insert new node at location left
+    else if (item < par->data) {
         par->left = node;
-    } else {
+    }
+    // Insert new node at location right
+    else {
         par->right = node;
     }
 }
 
 template<class Base>
 void BST<Base>::remove(const Base &item) {
-    BSTNode<Base> par = NULL;
-    BSTNode<Base> cur = this->root;
+    BSTNode<Base> *par = NULL;
+    BSTNode<Base> *cur = this->root;
     // IF KEY < VALUE && VALUE < KEY
     while (cur != NULL) {
         if (cur->data == item) {
@@ -123,27 +124,27 @@ void BST<Base>::remove(const Base &item) {
             // Delete node with only left child
             else if (cur->getRight() == NULL) {
                 if (par == NULL) {
-                    root = cur.getLeft();
+                    this->root = cur->getLeft();
                     delete cur;
                 } else if (par->getLeft() == cur) {
-                    par->left = cur.getLeft();
+                    par->left = cur->getLeft();
                     delete cur;
                 } else {
-                    par->right = cur.getRight();
+                    par->right = cur->getRight();
                     delete cur;
                 }
             }
 
             // Delete node with only right child
-            else if (cur.getLeft() == NULL) {
+            else if (cur->getLeft() == NULL) {
                 if (par == NULL) {
-                    root = cur.getRight();
+                    root = cur->getRight();
                     delete cur;
-                } else if (par.getLeft() == cur) {
-                    par->left = cur.getRight();
+                } else if (par->getLeft() == cur) {
+                    par->left = cur->getRight();
                     delete cur;
                 } else {
-                    par->right = cur.getLeft();
+                    par->right = cur->getLeft();
                     delete cur;
                 }
             }
