@@ -5,7 +5,7 @@
  * assignment: project 3
  * due date: October 2, 2022
  *
- * This file contains the driver for the binary search tree.
+ * This file contains the driver for the binary search encryptTree.
  */
 
 #include <iostream>
@@ -13,20 +13,30 @@
 using namespace std;
 
 int main() {
-    BST<string> tree;
+    EncryptionTree<string> encryptTree;
 
-    tree.insert("four");
-    tree.insert("score");
-    tree.insert("and");
-    tree.insert("seven");
-    tree.insert("years");
-    tree.insert("ago");
+    encryptTree.insert("four");
+    encryptTree.insert("score");
+    encryptTree.insert("and");
+    encryptTree.insert("seven");
+    encryptTree.insert("years");
+    encryptTree.insert("ago");
+    encryptTree.printPreorder();
+    cout << endl;
 
-    tree.printPreorder();
-    cout << endl << endl << endl;
+    cout << encryptTree.encrypt("four") << " ";
+    cout << encryptTree.encrypt("and") << " ";
+    cout << encryptTree.encrypt("ago") << " ";
+    cout << encryptTree.encrypt("score") << " ";
+    cout << encryptTree.encrypt("seven") << " ";
+    cout << encryptTree.encrypt("years") << " ";
+    cout << encryptTree.encrypt("founding") << " ";
+
+    //encryptTree.remove("and");
 
 
 
-    //tree.printPreorder();
+
+    //encryptTree.printPreorder();
     return 0;
 }

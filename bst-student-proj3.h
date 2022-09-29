@@ -12,6 +12,8 @@
 #define BST_STUDENT_PROJ3 
 
 #include "bst-prof-proj3.h"
+#include <queue>
+#include <string>
 
 /* Place your implementation of the BSTNode, BST, and EncryptionTree classes
  * here.
@@ -70,7 +72,7 @@ void BST<Base>::insert(const Base &item) {
 
     // Create a previous and temporary node for iteration
     BSTNode<Base> *par = NULL;
-    BSTNode<Base> *cur = root;
+    BSTNode<Base> *cur = this->root;
 
     // While temp is not null iterate through tree
     while (cur) {
@@ -80,17 +82,17 @@ void BST<Base>::insert(const Base &item) {
             cur = cur->left;
         }
         // If item > temp, temp = right node
-        else {
+        else if (cur->data < item) {
             cur = cur->right;
         }
     }
 
     // If the root is null then assign root to item
     if (!root) {
-        root = node;
+        this->root = node;
     }
     // Insert new node at location left
-    else if (item < par->data) {
+    else if (item < par->getData()) {
         par->left = node;
     }
     // Insert new node at location right
@@ -111,13 +113,10 @@ void BST<Base>::remove(const Base &item) {
             if (cur->getLeft() == NULL && cur->getRight() == NULL) {
                 if (par == NULL) {
                     root = NULL;
-                    delete cur;
                 } else if (par->getLeft() == cur) {
                     par->left = NULL;
-                    delete cur;
                 } else {
                     par->right = NULL;
-                    delete cur;
                 }
             }
 
@@ -156,14 +155,30 @@ void BST<Base>::remove(const Base &item) {
                     suc = suc.getLeft();
                 }
             }
-
+            delete cur;
         }
     }
 }
 
 template<class Base>
 string EncryptionTree<Base>::encrypt(const Base &item) const {
-    return std::string();
+    const BSTNode<Base> *cur = this->root;
+    string encrypt = "r";
+
+    while (cur != NULL) {
+        if (!(cur->getData() < item) && !(item < cur->getData())) { // could use boolean to simplify
+            return encrypt;
+        }
+        else if (item < cur->getData()) {
+            cur = cur->getLeft();
+            encrypt += "0";
+        }
+        else if (cur->getData() < item) {
+            cur = cur->getRight();
+            encrypt += "1";
+        }
+    }
+    return "?";
 }
 
 template<class Base>
