@@ -14,38 +14,61 @@ using namespace std;
 
 int main() {
     EncryptionTree<string> encryptTree;
+    string input;
+    bool end = false;
 
-    encryptTree.insert("four");
-    encryptTree.insert("score");
-    encryptTree.insert("and");
-    encryptTree.insert("seven");
-    encryptTree.insert("years");
-    encryptTree.insert("ago");
-    encryptTree.printPreorder();
-    cout << endl;
+    while (getline(cin, input) && !end) {
+        string command;
+        command = input.at(0);
+        input.erase(0, 2);
 
-    cout << encryptTree.encrypt("four") << " ";
-    cout << encryptTree.encrypt("and") << " ";
-    cout << encryptTree.encrypt("ago") << " ";
-    cout << encryptTree.encrypt("score") << " ";
-    cout << encryptTree.encrypt("seven") << " ";
-    cout << encryptTree.encrypt("years") << " ";
-    cout << encryptTree.encrypt("founding") << endl;
+        if (command == "i") {
+            encryptTree.insert(input);
+        }
+        else if (command == "r") {
+            encryptTree.remove(input);
+        }
+        else if (command == "e") {
+            string word;
+            int delim = 39;
+            int i = 0;
+            input.erase(0, 1);
+
+            do {
+                if (input.at(i) == ' ' || input.at(i+1) == (char)delim) {
+                    cout << encryptTree.encrypt(word) << " ";
+                    word.erase();
+                } else {
+                    word += input.at(i);
+                }
+                i++;
+            } while (input.at(i) != (char)delim);
+            cout << endl;
+
+        } else if (command == "d") {
+            string loc;
+            int delim = 39;
+            int i = 0;
+            input.erase(0, 1);
+
+            while (input.at(i) != (char)delim) {
+                if (input.at(i) == ' ') {
+                    cout << *encryptTree.decrypt(loc) << " ";
+                    loc.erase();
+                } else {
+                    loc += input.at(i);
+                }
+                i++;
+            }
+            cout << endl;
+        } else if (command == "p") {
+            encryptTree.printPreorder();
+        } else {
+            end = true;
+        }
 
 
+    }
 
-    encryptTree.remove("ago");
-    encryptTree.printPreorder();
-    cout << endl;
-
-    cout << *encryptTree.decrypt("r") << " ";
-    cout << *encryptTree.decrypt("r0") << " ";
-    cout << *encryptTree.decrypt("r00") << " ";
-
-
-
-
-
-    //encryptTree.printPreorder();
     return 0;
 }

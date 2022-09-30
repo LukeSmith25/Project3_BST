@@ -238,7 +238,7 @@ string EncryptionTree<Base>::encrypt(const Base &item) const {
 
 template<class Base>
 const Base *EncryptionTree<Base>::decrypt(const string &path) const {
-    const BSTNode<Base> *cur = this->root;
+    const BSTNode<Base> *cur;
     queue<char> decrypt;
 
     // Removes characters from string and pushes to queue
