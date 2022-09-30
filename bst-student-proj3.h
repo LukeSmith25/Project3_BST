@@ -241,10 +241,12 @@ const Base *EncryptionTree<Base>::decrypt(const string &path) const {
     const BSTNode<Base> *cur = this->root;
     queue<char> decrypt;
 
+    // Removes characters from string and pushes to queue
     for (int i = 0; i < path.size() - 1; i++) {
         decrypt.push(path.at(i));
     }
 
+    // While queue ! empty, navigate to node
     while (!decrypt.empty()) {
         if (decrypt.front() == 'r') {
             cur = this->root;
@@ -263,7 +265,7 @@ const Base *EncryptionTree<Base>::decrypt(const string &path) const {
         }
     }
 
-    return cur->getData();
+    return &cur->getData();
 }
 
 

@@ -38,9 +38,9 @@ int main() {
     encryptTree.printPreorder();
     cout << endl;
 
-    cout << encryptTree.decrypt("r") << " ";
-    cout << encryptTree.decrypt("r0") << " ";
-    cout << encryptTree.decrypt("r00") << " ";
+    cout << *encryptTree.decrypt("r") << " ";
+    cout << *encryptTree.decrypt("r0") << " ";
+    cout << *encryptTree.decrypt("r00") << " ";
 
 
 
