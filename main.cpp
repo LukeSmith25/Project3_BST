@@ -30,9 +30,18 @@ int main() {
     cout << encryptTree.encrypt("score") << " ";
     cout << encryptTree.encrypt("seven") << " ";
     cout << encryptTree.encrypt("years") << " ";
-    cout << encryptTree.encrypt("founding") << " ";
+    cout << encryptTree.encrypt("founding") << endl;
 
-    //encryptTree.remove("and");
+
+
+    encryptTree.remove("ago");
+    encryptTree.printPreorder();
+    cout << endl;
+
+    cout << encryptTree.decrypt("r") << " ";
+    cout << encryptTree.decrypt("r0") << " ";
+    cout << encryptTree.decrypt("r00") << " ";
+
 
 
 

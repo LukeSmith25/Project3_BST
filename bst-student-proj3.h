@@ -22,7 +22,15 @@
  * #include the professor file.
  */
 
-
+/**
+ * BSTNode Constructor
+ *
+ * This function is the default constructor for BSTNode.
+ *
+ * Parameters: None.
+ *
+ * Return value: None.
+ */
 template<class Base>
 BSTNode<Base>::~BSTNode() {
     if (getLeft()) {
@@ -33,6 +41,17 @@ BSTNode<Base>::~BSTNode() {
     }
 }
 
+/**
+ * printPreorder
+ *
+ * This function traverses the tree and prints it in preorder.
+ *
+ * Parameters:
+ *      -os: output stream containing preorder traversal
+ *      -indent: indentation representing depth of node in tree
+ *
+ * Return value: None.
+ */
 template<class Base>
 void BSTNode<Base>::printPreorder(ostream &os, string indent) const {
     if (this) {
@@ -41,8 +60,9 @@ void BSTNode<Base>::printPreorder(ostream &os, string indent) const {
         getLeft()->printPreorder(os, indent);
         getRight()->printPreorder(os, indent);
     } else {
-        indent.erase(0, 1);
         os << indent << "NULL" << endl;
+        indent.pop_back();
+
     }
 }
 
@@ -103,87 +123,147 @@ void BST<Base>::insert(const Base &item) {
 
 template<class Base>
 void BST<Base>::remove(const Base &item) {
-    BSTNode<Base> *par = NULL;
-    BSTNode<Base> *cur = this->root;
-    // IF KEY < VALUE && VALUE < KEY
-    while (cur != NULL) {
-        if (cur->data == item) {
+    BSTNode<Base> *parent = this->root;
+    BSTNode<Base> *toRemove = this->root;
 
-            // Delete Leaf Node
-            if (cur->getLeft() == NULL && cur->getRight() == NULL) {
-                if (par == NULL) {
-                    root = NULL;
-                } else if (par->getLeft() == cur) {
-                    par->left = NULL;
-                } else {
-                    par->right = NULL;
+    if (!toRemove) {
+        return;
+    }
+
+    while (toRemove != NULL) {
+        // Key is found
+        if (!(toRemove->data < item) && !(item < toRemove->data)) {
+            // Remove leaf node
+            if (toRemove->left == NULL && toRemove->right == NULL) {
+                if (parent->left == toRemove) {
+                    parent->left = NULL;
                 }
+                else {
+                    parent->right = NULL;
+                }
+                delete toRemove;
             }
 
-            // Delete node with only left child
-            else if (cur->getRight() == NULL) {
-                if (par == NULL) {
-                    this->root = cur->getLeft();
-                    delete cur;
-                } else if (par->getLeft() == cur) {
-                    par->left = cur->getLeft();
-                    delete cur;
-                } else {
-                    par->right = cur->getRight();
-                    delete cur;
+            // Remove node with one child
+            else if (toRemove->left == NULL || toRemove->right == NULL) {
+                BSTNode<Base> *grandChild;
+                if (toRemove->left != NULL) {
+                    grandChild = toRemove->left;
+                    toRemove->left = NULL;
                 }
-            }
-
-            // Delete node with only right child
-            else if (cur->getLeft() == NULL) {
-                if (par == NULL) {
-                    root = cur->getRight();
-                    delete cur;
-                } else if (par->getLeft() == cur) {
-                    par->left = cur->getRight();
-                    delete cur;
-                } else {
-                    par->right = cur->getLeft();
-                    delete cur;
+                else {
+                    grandChild = toRemove->right;
+                    toRemove->right = NULL;
                 }
+                if (parent->left == toRemove) {
+                    parent->left = grandChild;
+                }
+                else {
+                    parent->right = grandChild;
+                }
+                delete toRemove;
             }
 
             // Remove node with two children
             else {
-                BSTNode<Base> suc = cur;
-                while (suc.getLeft() != NULL) {
-                    suc = suc.getLeft();
+                BSTNode<Base> *leftMost = toRemove->right;
+                BSTNode<Base> *leftMostParent = toRemove;
+
+                if (leftMost->left != NULL) {
+                    while (leftMost->left != NULL) {
+                        leftMostParent = leftMost;
+                        leftMost = leftMost->left;
+                    }
+                    leftMostParent->left = leftMost->right;
+                    leftMost->right = toRemove->right;
                 }
+                leftMost->left = toRemove->left;
+
+                if (parent->left == toRemove) {
+                    parent->left = leftMost;
+                }
+                else {
+                    parent->right = leftMost;
+                }
+
+                toRemove->left = toRemove->right = NULL;
+
+                delete toRemove;
             }
-            delete cur;
+        }
+
+        // Search Right
+        else if (toRemove->data < item) {
+            parent = toRemove;
+            toRemove = toRemove->right;
+        }
+
+        // Search Left
+        else {
+            parent = toRemove;
+            toRemove = toRemove->left;
         }
     }
+
 }
 
 template<class Base>
 string EncryptionTree<Base>::encrypt(const Base &item) const {
     const BSTNode<Base> *cur = this->root;
-    string encrypt = "r";
+    string path = "r";
 
     while (cur != NULL) {
-        if (!(cur->getData() < item) && !(item < cur->getData())) { // could use boolean to simplify
-            return encrypt;
+
+        // Equivalent comparison that returns path
+        if (!(cur->getData() < item) && !(item < cur->getData())) {
+            return path;
         }
+
+        // Traverses left and adds 0
         else if (item < cur->getData()) {
             cur = cur->getLeft();
-            encrypt += "0";
+            path += "0";
         }
+
+        // Traverses right and adds 1
         else if (cur->getData() < item) {
             cur = cur->getRight();
-            encrypt += "1";
+            path += "1";
         }
     }
+
+    // If not found, returns ? for invalid word
     return "?";
 }
 
 template<class Base>
 const Base *EncryptionTree<Base>::decrypt(const string &path) const {
-    return nullptr;
+    const BSTNode<Base> *cur = this->root;
+    queue<char> decrypt;
+
+    for (int i = 0; i < path.size() - 1; i++) {
+        decrypt.push(path.at(i));
+    }
+
+    while (!decrypt.empty()) {
+        if (decrypt.front() == 'r') {
+            cur = this->root;
+            decrypt.pop();
+        }
+        else if (decrypt.front() == '0') {
+            cur = cur->getLeft();
+            decrypt.pop();
+        }
+        else if (decrypt.front() == 1) {
+            cur = cur->getRight();
+            decrypt.pop();
+        }
+        else {
+            cur = NULL;
+        }
+    }
+
+    return cur->getData();
 }
 
 
