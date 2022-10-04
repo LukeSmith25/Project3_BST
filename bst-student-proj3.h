@@ -178,7 +178,9 @@ void BST<Base>::remove(const Base &item) {
                 else {
                     parent->right = NULL;
                 }
-                delete toRemove;
+                if (toRemove != NULL) {
+                    delete toRemove;
+                }
             }
 
             // Remove node with one child
@@ -198,7 +200,9 @@ void BST<Base>::remove(const Base &item) {
                 else {
                     parent->right = grandChild;
                 }
-                delete toRemove;
+                if (toRemove != NULL) {
+                    delete toRemove;
+                }
             }
 
             // Remove node with two children
@@ -225,7 +229,9 @@ void BST<Base>::remove(const Base &item) {
 
                 toRemove->left = toRemove->right = NULL;
 
-                delete toRemove;
+                if (toRemove != NULL) {
+                    delete toRemove;
+                }
             }
         }
 

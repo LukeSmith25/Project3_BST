@@ -24,7 +24,7 @@ int main() {
 
         // Find location of whitespace and save everything prior
         size_t pos = input.find(' ');
-        command = input.substr(0, pos);
+        command = input.at(0);
 
         // Erase command from input including whitespace
         input.erase(0, pos+1);
@@ -45,44 +45,69 @@ int main() {
         // If command is "e", encrypt
         else if (command == "e") {
             string word;
+            bool lastWord = false;
             i = 0;
             // Erase first ' character
             input.erase(0, 1);
 
-            while (input.at(i) != '\'') {
-                if (input.at(i) == ' ' || input.at(i+1) == '\'') {
-                    cout << encryptTree.encrypt(word) << " ";
-                    word.erase();
-                } else {
-                    word += input.at(i);
+            do {
+                pos = input.find(' ');
+                word = input.substr(0, pos);
+
+                if (pos == string::npos) {
+                    pos = input.find('\'');
+                    word = input.substr(0, pos);
+                    lastWord = true;
                 }
-                i++;
-            }
+                if (encryptTree.decrypt(word) == NULL) {
+                    if (lastWord) {
+                        cout << "?";
+                    } else {
+                        cout << "? ";
+                    }
+                } else {
+                    if (lastWord) {
+                        cout << *encryptTree.decrypt(word);
+                    } else {
+                        cout << *encryptTree.decrypt(word) << " ";
+                    }
+                }
+                input.erase(0, pos+1);
+            } while (!lastWord);
             cout << endl;
 
         } else if (command == "d") {
             string word;
+            bool lastWord = false;
             i = 0;
             // Erase first ' character
             input.erase(0, 1);
 
-            while (input.at(i) != '\'') {
-                if (input.at(i) == ' ' || input.at(i+1) == '\'') {
-                    if (encryptTree.decrypt(word) == NULL) {
-                        i++;
-                        word.erase();
-                        cout << "? ";
+            do {
+                pos = input.find(' ');
+                word = input.substr(0, pos);
+
+                if (pos == string::npos) {
+                    pos = input.find('\'');
+                    word = input.substr(0, pos);
+                    lastWord = true;
+                }
+                if (encryptTree.decrypt(word) == NULL) {
+                    if (lastWord) {
+                        cout << "?";
                     } else {
-                        cout << *encryptTree.decrypt(word) << " ";
-                        word.erase();
+                        cout << "? ";
                     }
                 } else {
-                    word += input.at(i);
+                    if (lastWord) {
+                        cout << *encryptTree.decrypt(word);
+                    } else {
+                        cout << *encryptTree.decrypt(word) << " ";
+                    }
                 }
-                i++;
-            }
+                input.erase(0, pos+1);
+            } while (!lastWord);
             cout << endl;
-
 
         } else if (command == "p") {
             encryptTree.printPreorder();
@@ -92,6 +117,5 @@ int main() {
             continue;
         }
     }
-    encryptTree.printPreorder();
     return 0;
 }

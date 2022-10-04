@@ -1,0 +1,134 @@
+CSI 3334
+Data structures
+Exercises on removing nodes from a binary search tree
+
+Exercise 1: removing a leaf node
+        You must do these steps:
+            - set the correct child pointer of the parent to NULL
+            - delete the node containing the item to remove
+
+        BSTNode<Base> *parent, *toRemove;
+        // ...
+        // Assume that toRemove points to the node to remove, and parent points
+        // to the parent of that node. Also, assume that the toRemove is a leaf
+        // node (has no children). You DON'T know which child of the parent
+        // toRemove is.
+
+
+        if (parent->left == toRemove) {                     // 1
+
+           Parent->left = NULL;         		    // 2 
+        } else {
+
+           Parent->right = NULL;          		    // 3
+        }
+
+        delete toRemove;          			    // 4
+
+
+Exercise 2: removing a node with one child
+        You must do these steps:
+            - put the child of the node to remove in the place of the node to
+              remove
+            - delete the node containing the item to remove
+
+        BSTNode<Base> *parent, *toRemove;
+        // ...
+        // Assume that toRemove points to the node to remove, and parent points
+        // to the parent of that node. Also, assume that toRemove has one child.
+        // Note you DON'T know which child of the parent toRemove is, or which
+        // child toRemove has.
+        BSTNode<Base> *grandchild;
+
+        if (toRemove->left != NULL) {
+
+
+            grandchild = toRemove->left;                // 1
+
+
+            toRemove->left = NULL         		// 2
+        } else {
+
+
+            Grandchild = toRemove->left;    		// 3
+
+
+            toRemove->right = NULL;     		// 4
+        }
+
+
+        if (parent->left == toRemove) {
+
+
+            Parent->left = grandchild;                   // 5
+        } else {
+
+
+            Parent->right = grandchild;                  // 6
+        }
+
+        delete toRemove;                    		 // 7
+
+
+
+
+
+
+
+Exercise 3: removing a node with two children
+        Do the following steps:
+            - search for the leftmost node of the right subtree
+            - remove the leftmost node (keep track of its children)
+            - place the leftmost node in the same place as the node to remove
+            - remove and delete the node to remove
+
+        BSTNode<Base> *parent, *toRemove;
+        // ...
+        // Assume that toRemove has two children.
+        // Write the code that searches for the leftmost child of
+        // the right subtree.
+
+
+        BSTNode<Base> *leftMost = toRemove->right  // 1
+
+
+                     *leftMostParent = toRemove     // 2
+
+        if (leftMost->left != NULL) { // this accounts for the case of the leaf node
+
+
+            while (leftMost->left != NULL) {               // 3
+
+                leftMostParent = leftMost;                // 4
+
+                leftMost = leftMost->left;                // 5
+            }
+
+
+
+            leftMostParent->left = leftMost->right;                  // 6
+
+
+            leftMost->right = toRemove->right;                // 7
+        }
+
+
+        leftMost->left = toRemove->left                   // 8
+
+
+        if (parent->left == toRemove) {                            // 9
+
+
+            Parent->left = leftMost;                                  // 10
+        } else {
+
+
+            Parent->right = leftMost                               // 11
+        }
+
+
+        toRemove->left = toRemove->right = NULL    // 12
+
+
+        delete toRemove                                  // 13
+
