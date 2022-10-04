@@ -19,42 +19,55 @@ int main() {
 
     while (getline(cin, input) && !end) {
         string command;
-        int spc = 32;
-        int i = 0;
-        command = input.at(0);
-        input.erase(0, 2);
+        string value;
+        int i;
 
+        // Find location of whitespace and save everything prior
+        size_t pos = input.find(' ');
+        command = input.substr(0, pos);
+
+        // Erase command from input including whitespace
+        input.erase(0, pos+1);
+
+        // If the command is not 1 char, skip iteration
+        if (command.size() != 1) {
+            continue;
+        }
+
+        // If command is "i", insert
         if (command == "i") {
             encryptTree.insert(input);
         }
+        // If command is "r", remove
         else if (command == "r") {
             encryptTree.remove(input);
         }
+        // If command is "e", encrypt
         else if (command == "e") {
             string word;
-            int delim = 39;
             i = 0;
+            // Erase first ' character
             input.erase(0, 1);
 
-            do {
-                if (input.at(i) == ' ' || input.at(i+1) == (char)delim) {
+            while (input.at(i) != '\'') {
+                if (input.at(i) == ' ' || input.at(i+1) == '\'') {
                     cout << encryptTree.encrypt(word) << " ";
                     word.erase();
                 } else {
                     word += input.at(i);
                 }
                 i++;
-            } while (input.at(i) != (char)delim);
+            }
             cout << endl;
 
         } else if (command == "d") {
             string word;
-            int delim = 39;
             i = 0;
+            // Erase first ' character
             input.erase(0, 1);
 
-            while (input.at(i) != (char)delim) {
-                if (input.at(i) == ' ' || input.at(i+1) == (char)delim) {
+            while (input.at(i) != '\'') {
+                if (input.at(i) == ' ' || input.at(i+1) == '\'') {
                     if (encryptTree.decrypt(word) == NULL) {
                         i++;
                         word.erase();
@@ -79,6 +92,6 @@ int main() {
             continue;
         }
     }
-
+    encryptTree.printPreorder();
     return 0;
 }
