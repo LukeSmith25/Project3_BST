@@ -66,7 +66,15 @@ void BSTNode<Base>::printPreorder(ostream &os, string indent) const {
     }
 }
 
-
+/**
+ * minNode
+ *
+ * This function returns the leftmost node.
+ *
+ * Parameters: None.
+ *
+ * Return value: Leftmost BSTNode.
+ */
 template<class Base>
 const BSTNode<Base> *BSTNode<Base>::minNode() const {
     if (getLeft() != NULL) {
@@ -76,6 +84,15 @@ const BSTNode<Base> *BSTNode<Base>::minNode() const {
     }
 }
 
+/**
+ * maxNode
+ *
+ * This function returns the rightmost node.
+ *
+ * Parameters: None.
+ *
+ * Return value: Rightmost BSTNode.
+ */
 template<class Base>
 const BSTNode<Base> *BSTNode<Base>::maxNode() const {
     if (getRight() != NULL) {
@@ -85,6 +102,16 @@ const BSTNode<Base> *BSTNode<Base>::maxNode() const {
     }
 }
 
+/**
+ * insert
+ *
+ * Inserts node into BST.
+ *
+ * Parameters:
+ *      item: item to be inserted into tree
+ *
+ * Return value: None.
+ */
 template<class Base>
 void BST<Base>::insert(const Base &item) {
     // Declare new node to be inserted
@@ -121,6 +148,16 @@ void BST<Base>::insert(const Base &item) {
     }
 }
 
+/**
+ * remove
+ *
+ * This function removes a node from the BST.
+ *
+ * Parameters:
+ *      item: item to be removed
+ *
+ * Return value: None.
+ */
 template<class Base>
 void BST<Base>::remove(const Base &item) {
     BSTNode<Base> *parent = this->root;
@@ -207,6 +244,17 @@ void BST<Base>::remove(const Base &item) {
 
 }
 
+/**
+ * encrypt
+ *
+ * This function encrypts a cleartext message
+ *
+ * Parameters:
+ *      item: encrypts item passed in based on location in BST.
+ *
+ * Return value:
+ *      string: String that is modified to be encrypted.
+ */
 template<class Base>
 string EncryptionTree<Base>::encrypt(const Base &item) const {
     const BSTNode<Base> *cur = this->root;
@@ -236,36 +284,33 @@ string EncryptionTree<Base>::encrypt(const Base &item) const {
     return "?";
 }
 
+/**
+ * decrypt
+ *
+ * This function decrypts a BST with encrypted string passed in.
+ *
+ * Parameters:
+ *      path: string representing encrypted path in BST
+ *
+ * Return value:
+ *      Base: templated data of node
+ */
 template<class Base>
 const Base *EncryptionTree<Base>::decrypt(const string &path) const {
-    const BSTNode<Base> *cur;
-    queue<char> decrypt;
+    const BSTNode<Base> *cur = this->root;
 
-    // Removes characters from string and pushes to queue
-    for (int i = 0; i < path.size() - 1; i++) {
-        decrypt.push(path.at(i));
-    }
-
-    // While queue ! empty, navigate to node
-    while (!decrypt.empty()) {
-        if (decrypt.front() == 'r') {
+    for (int i = 0; i < path.size(); i++) {
+        if (path.at(i) == 'r') {
             cur = this->root;
-            decrypt.pop();
-        }
-        else if (decrypt.front() == '0') {
+        } else if (path.at(i) == '0') {
             cur = cur->getLeft();
-            decrypt.pop();
-        }
-        else if (decrypt.front() == 1) {
+        } else if (path.at(i) == '1') {
             cur = cur->getRight();
-            decrypt.pop();
-        }
-        else {
+        } else {
             cur = NULL;
         }
     }
-
-    return &cur->getData();
+    return &(cur->getData());
 }
 
 

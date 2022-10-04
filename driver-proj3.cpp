@@ -19,6 +19,8 @@ int main() {
 
     while (getline(cin, input) && !end) {
         string command;
+        int spc = 32;
+        int i = 0;
         command = input.at(0);
         input.erase(0, 2);
 
@@ -31,7 +33,7 @@ int main() {
         else if (command == "e") {
             string word;
             int delim = 39;
-            int i = 0;
+            i = 0;
             input.erase(0, 1);
 
             do {
@@ -46,28 +48,36 @@ int main() {
             cout << endl;
 
         } else if (command == "d") {
-            string loc;
+            string word;
             int delim = 39;
-            int i = 0;
+            i = 0;
             input.erase(0, 1);
 
             while (input.at(i) != (char)delim) {
-                if (input.at(i) == ' ') {
-                    cout << *encryptTree.decrypt(loc) << " ";
-                    loc.erase();
+                if (input.at(i) == ' ' || input.at(i+1) == (char)delim) {
+                    if (encryptTree.decrypt(word) == NULL) {
+                        i++;
+                        word.erase();
+                        cout << "? ";
+                    } else {
+                        cout << *encryptTree.decrypt(word) << " ";
+                        word.erase();
+                    }
                 } else {
-                    loc += input.at(i);
+                    word += input.at(i);
                 }
                 i++;
             }
             cout << endl;
+
+
         } else if (command == "p") {
             encryptTree.printPreorder();
-        } else {
+        } else if (command == "q") {
             end = true;
+        } else {
+            continue;
         }
-
-
     }
 
     return 0;

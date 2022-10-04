@@ -72,8 +72,8 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 
 build cmake_object_order_depends_target_proj3_Tree_Based_Encryption_Decrytption: phony || CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir
 
-build CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir/main.cpp.o: CXX_COMPILER__proj3_Tree_Based_Encryption_Decrytption_Debug /Users/lukesmith/CLionProjects/CSI_3334/proj3_Tree-Based_Encryption-Decrytption/main.cpp || cmake_object_order_depends_target_proj3_Tree_Based_Encryption_Decrytption
-  DEP_FILE = CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir/main.cpp.o.d
+build CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir/driver-proj3.cpp.o: CXX_COMPILER__proj3_Tree_Based_Encryption_Decrytption_Debug /Users/lukesmith/CLionProjects/CSI_3334/proj3_Tree-Based_Encryption-Decrytption/driver-proj3.cpp || cmake_object_order_depends_target_proj3_Tree_Based_Encryption_Decrytption
+  DEP_FILE = CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir/driver-proj3.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++14
   OBJECT_DIR = CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir
   OBJECT_FILE_DIR = CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir
@@ -86,7 +86,7 @@ build CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir/main.cpp.o: CXX_COM
 #############################################
 # Link the executable proj3_Tree_Based_Encryption_Decrytption
 
-build proj3_Tree_Based_Encryption_Decrytption: CXX_EXECUTABLE_LINKER__proj3_Tree_Based_Encryption_Decrytption_Debug CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir/main.cpp.o
+build proj3_Tree_Based_Encryption_Decrytption: CXX_EXECUTABLE_LINKER__proj3_Tree_Based_Encryption_Decrytption_Debug CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir/driver-proj3.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk
   OBJECT_DIR = CMakeFiles/proj3_Tree_Based_Encryption_Decrytption.dir
   POST_BUILD = :
