@@ -15,106 +15,84 @@ using namespace std;
 int main() {
     EncryptionTree<string> encryptTree;
     string input;
+    char comm;
     bool end = false;
 
-    while (getline(cin, input) && !end) {
-        string command;
-        string value;
-        int i;
+    while (cin >> comm && !end) {
 
-        // Find location of whitespace and save everything prior
-        size_t pos = input.find(' ');
-        command = input.at(0);
+        switch(comm){
+            case 'p':
+                encryptTree.printPreorder(cout);
+                break;
 
-        // Erase command from input including whitespace
-        input.erase(0, pos+1);
+            case 'i':
+                cin >> ws >> input >> ws;
+                encryptTree.insert(input);
+                break;
+            case 'r':
+                cin >> ws >> input >> ws;
+                encryptTree.remove(input);
+                break;
 
-        // If the command is not 1 char, skip iteration
-        if (command.size() != 1) {
-            continue;
-        }
-
-        // If command is "i", insert
-        if (command == "i") {
-            encryptTree.insert(input);
-        }
-        // If command is "r", remove
-        else if (command == "r") {
-            encryptTree.remove(input);
-        }
-        // If command is "e", encrypt
-        else if (command == "e") {
-            string word;
-            bool lastWord = false;
-            i = 0;
-            // Erase first ' character
-            input.erase(0, 1);
-
-            do {
-                pos = input.find(' ');
-                word = input.substr(0, pos);
-
-                if (pos == string::npos) {
-                    pos = input.find('\'');
-                    word = input.substr(0, pos);
-                    lastWord = true;
+            case 'e':
+                while(comm != '\''){
+                    cin.get(comm);
                 }
-                if (encryptTree.decrypt(word) == NULL) {
-                    if (lastWord) {
+                cin >> input;
+                if(input.at(0) != '\''){
+                    while(input.at(input.size() - 1) != '\''){
+                        cout << encryptTree.encrypt(input) << " ";
+                        cin >> input;
+                    }
+                    if(input.at(input.size() - 1) == 'q'){
+                        end = true;
+                        input.erase(input.size() - 2);
+                    }else{
+                        input.erase(input.size() - 1);
+                    }
+
+                    cout << encryptTree.encrypt(input);
+
+                } else if(input.at(input.size() - 1) == 'q'){
+                    end = true;
+                }
+                cout << endl;
+
+                break;
+
+            case 'd':
+                while(comm != '\''){
+                    cin.get(comm);
+                }
+                cin >> input;
+                if(input.at(0) != '\''){
+                    while(input.at(input.size() - 1) != '\''){
+                        if(encryptTree.decrypt(input)){
+                            cout << *encryptTree.decrypt(input) << " ";
+                        } else{
+                            cout << "?" << " ";
+                        }
+                        cin >> input;
+
+                    }
+                    if(input.at(input.size() - 1) == 'q'){
+                        end = true;
+                        input.erase(input.size() - 2);
+                    }else{
+                        input.erase(input.size() - 1);
+                    }
+                    if(encryptTree.decrypt(input)){
+                        cout << *encryptTree.decrypt(input);
+                    } else{
                         cout << "?";
-                    } else {
-                        cout << "? ";
                     }
-                } else {
-                    if (lastWord) {
-                        cout << *encryptTree.decrypt(word);
-                    } else {
-                        cout << *encryptTree.decrypt(word) << " ";
-                    }
+                } else if(input.at(input.size() - 1) == 'q'){
+                    end = true;
                 }
-                input.erase(0, pos+1);
-            } while (!lastWord);
-            cout << endl;
+                cout << endl;
 
-        } else if (command == "d") {
-            string word;
-            bool lastWord = false;
-            i = 0;
-            // Erase first ' character
-            input.erase(0, 1);
 
-            do {
-                pos = input.find(' ');
-                word = input.substr(0, pos);
-
-                if (pos == string::npos) {
-                    pos = input.find('\'');
-                    word = input.substr(0, pos);
-                    lastWord = true;
-                }
-                if (encryptTree.decrypt(word) == NULL) {
-                    if (lastWord) {
-                        cout << "?";
-                    } else {
-                        cout << "? ";
-                    }
-                } else {
-                    if (lastWord) {
-                        cout << *encryptTree.decrypt(word);
-                    } else {
-                        cout << *encryptTree.decrypt(word) << " ";
-                    }
-                }
-                input.erase(0, pos+1);
-            } while (!lastWord);
-            cout << endl;
-
-        } else if (command == "p") {
-            encryptTree.printPreorder();
-        } else if (command == "q") {
-            end = true;
-        } else {
-            continue;
+                break;
         }
     }
     return 0;

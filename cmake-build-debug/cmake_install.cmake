@@ -1,8 +1,8 @@
-# Install script for directory: /Users/lukesmith/CLionProjects/CSI_3334/proj3_Tree-Based_Encryption-Decrytption
+# Install script for directory: C:/Users/Luke/CLionProjects/Project3_BST
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/proj3_Tree_Based_Encryption_Decrytption")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,7 +34,7 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/Library/Developer/CommandLineTools/usr/bin/objdump")
+  set(CMAKE_OBJDUMP "C:/Program Files/JetBrains/CLion 2022.2.4/bin/mingw/bin/objdump.exe")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/lukesmith/CLionProjects/CSI_3334/proj3_Tree-Based_Encryption-Decrytption/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Luke/CLionProjects/Project3_BST/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

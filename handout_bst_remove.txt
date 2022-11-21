@@ -89,46 +89,23 @@ Exercise 3: removing a node with two children
         // the right subtree.
 
 
-        BSTNode<Base> *leftMost = toRemove->right  // 1
+        BSTNode<Base> *leftMost = toRemove->right;
+        BSTNode<Base> *leftMostParent = toRemove;
 
-
-                     *leftMostParent = toRemove     // 2
-
-        if (leftMost->left != NULL) { // this accounts for the case of the leaf node
-
-
-            while (leftMost->left != NULL) {               // 3
-
-                leftMostParent = leftMost;                // 4
-
-                leftMost = leftMost->left;                // 5
+        if (leftMost->left != NULL) {
+            while (leftMost->left != NULL) {
+                leftMostParent = leftMost;
+                leftMost = leftMost->left;
             }
-
-
-
-            leftMostParent->left = leftMost->right;                  // 6
-
-
-            leftMost->right = toRemove->right;                // 7
+            leftMostParent->left = leftMost->right;
+            leftMost->right = toRemove->right;
         }
-
-
-        leftMost->left = toRemove->left                   // 8
-
-
-        if (parent->left == toRemove) {                            // 9
-
-
-            Parent->left = leftMost;                                  // 10
+        leftMost->left = toRemove->left;
+        if (parent->left == toRemove) {
+            parent->left = leftMost;
         } else {
-
-
-            Parent->right = leftMost                               // 11
+           parent->right = leftMost;
         }
-
-
-        toRemove->left = toRemove->right = NULL    // 12
-
-
-        delete toRemove                                  // 13
+        toRemove->left = toRemove->right = NULL;
+        delete toRemove;
 

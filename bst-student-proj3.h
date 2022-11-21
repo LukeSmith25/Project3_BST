@@ -15,13 +15,6 @@
 #include <queue>
 #include <string>
 
-/* Place your implementation of the BSTNode, BST, and EncryptionTree classes
- * here.
- *
- * Your driver should #include this file, which (as you can see above) will also
- * #include the professor file.
- */
-
 /**
  * BSTNode Constructor
  *
@@ -115,36 +108,41 @@ const BSTNode<Base> *BSTNode<Base>::maxNode() const {
 template<class Base>
 void BST<Base>::insert(const Base &item) {
     // Declare new node to be inserted
-    BSTNode<Base> *node = new BSTNode<Base>(item);
+    BSTNode<Base> *newNode = new BSTNode<Base>(item);
 
     // Create a previous and temporary node for iteration
     BSTNode<Base> *par = NULL;
-    BSTNode<Base> *cur = this->root;
+    BSTNode<Base> *child = this->root;
 
     // While temp is not null iterate through tree
-    while (cur) {
-        par = cur;
+    while (child) {
+        par = child;
+
+        // If item == par
+        if (!(item < child->getData()) && !(child->getData() < item)) {
+            return;
+        }
         // If item < temp, temp = left node
-        if (item < cur->data) {
-            cur = cur->left;
+        else if (item < child->data) {
+            child = child->left;
         }
         // If item > temp, temp = right node
-        else if (cur->data < item) {
-            cur = cur->right;
+        else {
+            child = child->right;
         }
     }
 
     // If the root is null then assign root to item
     if (!root) {
-        this->root = node;
+        this->root = newNode;
     }
     // Insert new node at location left
     else if (item < par->getData()) {
-        par->left = node;
+        par->left = newNode;
     }
     // Insert new node at location right
     else {
-        par->right = node;
+        par->right = newNode;
     }
 }
 
@@ -160,94 +158,103 @@ void BST<Base>::insert(const Base &item) {
  */
 template<class Base>
 void BST<Base>::remove(const Base &item) {
-    BSTNode<Base> *parent = this->root;
     BSTNode<Base> *toRemove = this->root;
 
     if (!toRemove) {
         return;
     }
 
-    while (toRemove != NULL) {
-        // Key is found
-        if (!(toRemove->data < item) && !(item < toRemove->data)) {
-            // Remove leaf node
-            if (toRemove->left == NULL && toRemove->right == NULL) {
-                if (parent->left == toRemove) {
-                    parent->left = NULL;
-                }
-                else {
-                    parent->right = NULL;
-                }
-                if (toRemove != NULL) {
-                    delete toRemove;
-                }
-            }
+    BSTNode<Base> *parent = NULL;
 
-            // Remove node with one child
-            else if (toRemove->left == NULL || toRemove->right == NULL) {
-                BSTNode<Base> *grandChild;
-                if (toRemove->left != NULL) {
-                    grandChild = toRemove->left;
-                    toRemove->left = NULL;
-                }
-                else {
-                    grandChild = toRemove->right;
-                    toRemove->right = NULL;
-                }
-                if (parent->left == toRemove) {
-                    parent->left = grandChild;
-                }
-                else {
-                    parent->right = grandChild;
-                }
-                if (toRemove != NULL) {
-                    delete toRemove;
-                }
-            }
-
-            // Remove node with two children
-            else {
-                BSTNode<Base> *leftMost = toRemove->right;
-                BSTNode<Base> *leftMostParent = toRemove;
-
-                if (leftMost->left != NULL) {
-                    while (leftMost->left != NULL) {
-                        leftMostParent = leftMost;
-                        leftMost = leftMost->left;
-                    }
-                    leftMostParent->left = leftMost->right;
-                    leftMost->right = toRemove->right;
-                }
-                leftMost->left = toRemove->left;
-
-                if (parent->left == toRemove) {
-                    parent->left = leftMost;
-                }
-                else {
-                    parent->right = leftMost;
-                }
-
-                toRemove->left = toRemove->right = NULL;
-
-                if (toRemove != NULL) {
-                    delete toRemove;
-                }
-            }
+    while (toRemove) {
+        // If item is found
+        if (!(toRemove->getData() < item) && !(item < toRemove->getData())) {
+            break;
         }
-
-        // Search Right
-        else if (toRemove->data < item) {
-            parent = toRemove;
+        // Move Parent
+        parent = toRemove;
+        // If item is less than toRemove, search left
+        if (item < toRemove->getData()) {
+            toRemove = toRemove->left;
+        }
+        // If item is greater than toRemove, search right
+        else if (toRemove->getData() < item) {
             toRemove = toRemove->right;
         }
-
-        // Search Left
+        // If item is not found
         else {
-            parent = toRemove;
-            toRemove = toRemove->left;
+            return;
+        }
+        if(!toRemove){
+            return;
         }
     }
 
+    // Remove leaf node
+    if (toRemove->left == NULL && toRemove->right == NULL) {
+        if (parent->left == toRemove) {
+            parent->left = NULL;
+        }
+        else {
+            parent->right = NULL;
+        }
+
+        toRemove = NULL;
+        delete toRemove;
+    }
+
+    // Remove node with one child
+    else if (toRemove->left == NULL || toRemove->right == NULL) {
+        BSTNode<Base> *grandChild;
+        if (toRemove->left != NULL) {
+            grandChild = toRemove->left;
+            toRemove->left = NULL;
+        }
+        else {
+            grandChild = toRemove->right;
+            toRemove->right = NULL;
+        }
+        if (parent->left == toRemove) {
+            parent->left = grandChild;
+        }
+        else {
+            parent->right = grandChild;
+        }
+
+        toRemove = NULL;
+        delete toRemove;
+    }
+
+    // Remove node with two children
+    else {
+        BSTNode<Base> *leftMost = toRemove->right;
+        BSTNode<Base> *leftMostParent = toRemove;
+
+        if (leftMost->left != NULL) {
+            while (leftMost->left != NULL) {
+                leftMostParent = leftMost;
+                leftMost = leftMost->left;
+            }
+            leftMostParent->left = leftMost->right;
+            leftMost->right = toRemove->right;
+        }
+        leftMost->left = toRemove->left;
+
+        if (root == toRemove) {
+            root = leftMost;
+        }
+        else if (parent->left == toRemove) {
+            parent->left = leftMost;
+        }
+        else {
+            parent->right = leftMost;
+        }
+
+        toRemove->left = toRemove->right = NULL;
+
+        toRemove = NULL;
+        delete toRemove;
+    }
 }
 
 /**
