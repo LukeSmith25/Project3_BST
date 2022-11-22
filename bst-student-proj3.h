@@ -107,9 +107,6 @@ const BSTNode<Base> *BSTNode<Base>::maxNode() const {
  */
 template<class Base>
 void BST<Base>::insert(const Base &item) {
-    // Declare new node to be inserted
-    BSTNode<Base> *newNode = new BSTNode<Base>(item);
-
     // Create a previous and temporary node for iteration
     BSTNode<Base> *par = NULL;
     BSTNode<Base> *child = this->root;
@@ -120,7 +117,6 @@ void BST<Base>::insert(const Base &item) {
 
         // If item == par
         if (!(item < child->getData()) && !(child->getData() < item)) {
-            delete newNode;
             return;
         }
         // If item < temp, temp = left node
@@ -132,6 +128,8 @@ void BST<Base>::insert(const Base &item) {
             child = child->right;
         }
     }
+    // Declare new node to be inserted
+    BSTNode<Base> *newNode = new BSTNode<Base>(item);
 
     // If the root is null then assign root to item
     if (!root) {
