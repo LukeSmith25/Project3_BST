@@ -120,6 +120,7 @@ void BST<Base>::insert(const Base &item) {
 
         // If item == par
         if (!(item < child->getData()) && !(child->getData() < item)) {
+            delete newNode;
             return;
         }
         // If item < temp, temp = left node
@@ -192,7 +193,10 @@ void BST<Base>::remove(const Base &item) {
 
     // Remove leaf node
     if (toRemove->left == NULL && toRemove->right == NULL) {
-        if (parent->left == toRemove) {
+        if (root == toRemove) {
+            root = NULL;
+        }
+        else if (parent->left == toRemove) {
             parent->left = NULL;
         }
         else {
@@ -214,7 +218,10 @@ void BST<Base>::remove(const Base &item) {
             grandChild = toRemove->right;
             toRemove->right = NULL;
         }
-        if (parent->left == toRemove) {
+        if (root == toRemove) {
+            root = grandChild;
+        }
+        else if (parent->left == toRemove) {
             parent->left = grandChild;
         }
         else {
@@ -321,6 +328,10 @@ const Base *EncryptionTree<Base>::decrypt(const string &path) const {
             cur = cur->getRight();
         } else {
             cur = NULL;
+            break;
+        }
+        if (cur == NULL) {
+            return NULL;
         }
     }
     return &(cur->getData());
