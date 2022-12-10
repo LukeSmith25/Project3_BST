@@ -5,13 +5,24 @@
  * assignment: project 3
  * due date: October 2, 2022
  *
- * This file contains the driver for the binary search encryptTree.
+ * This file contains the driver for the encryption and decryption using a BST.
  */
 
 #include <iostream>
 #include "bst-student-proj3.h"
 using namespace std;
 
+/**
+ * main driver
+ *
+ * This function is the driver for utilizing an encryption and decryption
+ * binary search tree.
+ *
+ * Parameters: None.
+ *
+ * Return value:
+ *      int: 0 for code nominal
+ */
 int main() {
     EncryptionTree<string> encryptTree;
     string input;

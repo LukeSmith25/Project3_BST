@@ -5,7 +5,8 @@
  * assignment: project 3
  * due date: October 2, 2022
  *
- * This file contains the driver for the binary search tree.
+ * This file contains the implementation for the BSTNode, BST, and Encryption/
+ * Decryption classes.
  */
 
 #ifndef BST_STUDENT_PROJ3
@@ -16,9 +17,9 @@
 #include <string>
 
 /**
- * BSTNode Constructor
+ * BSTNode Destructor
  *
- * This function is the default constructor for BSTNode.
+ * This function is the default destructor for a BSTNode.
  *
  * Parameters: None.
  *
@@ -37,13 +38,13 @@ BSTNode<Base>::~BSTNode() {
 /**
  * printPreorder
  *
- * This function traverses the tree and prints it in preorder.
+ * This function recursively traverses the tree and prints it in preorder.
  *
  * Parameters:
  *      -os: output stream containing preorder traversal
  *      -indent: indentation representing depth of node in tree
  *
- * Return value: None.
+ * Return value: void.
  */
 template<class Base>
 void BSTNode<Base>::printPreorder(ostream &os, string indent) const {
@@ -98,12 +99,12 @@ const BSTNode<Base> *BSTNode<Base>::maxNode() const {
 /**
  * insert
  *
- * Inserts node into BST.
+ * This function searches and inserts node into BST.
  *
  * Parameters:
  *      item: item to be inserted into tree
  *
- * Return value: None.
+ * Return value: void.
  */
 template<class Base>
 void BST<Base>::insert(const Base &item) {
@@ -111,7 +112,7 @@ void BST<Base>::insert(const Base &item) {
     BSTNode<Base> *par = NULL;
     BSTNode<Base> *child = this->root;
 
-    // While temp is not null iterate through tree
+    // While child is not null iterate through tree
     while (child) {
         par = child;
 
@@ -148,7 +149,7 @@ void BST<Base>::insert(const Base &item) {
 /**
  * remove
  *
- * This function removes a node from the BST.
+ * This function searches and removes a node from the BST.
  *
  * Parameters:
  *      item: item to be removed
@@ -201,7 +202,6 @@ void BST<Base>::remove(const Base &item) {
             parent->right = NULL;
         }
 
-        toRemove = NULL;
         delete toRemove;
     }
 
@@ -226,7 +226,6 @@ void BST<Base>::remove(const Base &item) {
             parent->right = grandChild;
         }
 
-        toRemove = NULL;
         delete toRemove;
     }
 
@@ -257,7 +256,6 @@ void BST<Base>::remove(const Base &item) {
 
         toRemove->left = toRemove->right = NULL;
 
-        toRemove = NULL;
         delete toRemove;
     }
 }
@@ -268,10 +266,10 @@ void BST<Base>::remove(const Base &item) {
  * This function encrypts a cleartext message
  *
  * Parameters:
- *      item: encrypts item passed in based on location in BST.
+ *      item: encrypts item passed in based on the node's location in BST.
  *
  * Return value:
- *      string: String that is modified to be encrypted.
+ *      string: string containing encrypted node locations.
  */
 template<class Base>
 string EncryptionTree<Base>::encrypt(const Base &item) const {
@@ -308,10 +306,10 @@ string EncryptionTree<Base>::encrypt(const Base &item) const {
  * This function decrypts a BST with encrypted string passed in.
  *
  * Parameters:
- *      path: string representing encrypted path in BST
+ *      path: string representing encrypted path in BST.
  *
  * Return value:
- *      Base: templated data of node
+ *      Base: corresponding key to encrypted data.
  */
 template<class Base>
 const Base *EncryptionTree<Base>::decrypt(const string &path) const {
